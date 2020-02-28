@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public FloatingJoystick floatingJoystick;
     Rigidbody2D rb;
     float moveSpeed;
 
@@ -35,6 +34,7 @@ public class Player : MonoBehaviour
     {
         paused = false;
         rb = this.GetComponent<Rigidbody2D>();
+        moveSpeed = 2;
         //rt = (RectTransform)field.transform;
         //width = rt.rect.width;
         //height = rt.rect.height;
@@ -48,11 +48,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = Vector2.up * floatingJoystick.Vertical + Vector2.right * floatingJoystick.Horizontal;
-        rb.AddForce(direction * moveSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
-
-        if (Input.GetMouseButton(0) && paused == false)
-        {
+        /*if (floatingJoystick.down )//&& paused == false)
+        {*/
+//            this.transform.position += direction * Time.deltaTime * moveSpeed;
             Spawn.gameStart = true;
             /*Vector3 direction = Vector2.up * floatingJoystick.Vertical + Vector2.right * floatingJoystick.Horizontal;
 
@@ -74,7 +72,7 @@ public class Player : MonoBehaviour
 
 
 
-        }
+        
         if (Spawn.spawned == true)
         {
             time += Time.deltaTime;
