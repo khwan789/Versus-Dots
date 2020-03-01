@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour {
 
     Player myPlayer;
 
-    float speed = 3;
+    float speed = 5;
     Vector3 towards;
 
 	// Use this for initialization

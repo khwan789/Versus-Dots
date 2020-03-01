@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    Gradient myGradient;
-    float strobeDuration = 2f;
+    public Gradient myGradient;
+    float strobeDuration;
     // Start is called before the first frame update
     void Start()
     {
-
+        strobeDuration = 2f;
     }
 
     // Update is called once per frame

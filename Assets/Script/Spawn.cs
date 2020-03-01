@@ -56,7 +56,7 @@ public class Spawn : MonoBehaviour
         itemTime += Time.deltaTime;
         if (itemTime > itemSpeed)
         {
-            GameObject items = Instantiate(enemy, GameObject.Find("GameManager").transform);
+            GameObject items = Instantiate(item, GameObject.Find("GameManager").transform);
             items.transform.position = new Vector3(Random.Range(left + 0.5f, right - 0.5f), Random.Range(bottom + 0.5f, top));
 
             itemTime = 0;
