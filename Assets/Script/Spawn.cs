@@ -10,10 +10,8 @@ public class Spawn : MonoBehaviour
 
     //spawn enemy
     public GameObject enemy;
-    float top = 3.5f;
-    float bottom = -4.5f;
-    float right = 2.5f;
-    float left = -2.5f;
+    Vector2 screenBoundary;
+    float top,bottom,right,left;
     float time = 0;
     float speed = 0.52f;
     int playTime = 0;
@@ -33,7 +31,12 @@ public class Spawn : MonoBehaviour
     void Start()
     {
         timer = 0;
-        itemSpeed = Random.Range(7, 12);
+        itemSpeed = Random.Range(3, 5);
+        screenBoundary = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        top = screenBoundary.y;
+        bottom = -screenBoundary.y;
+        right = screenBoundary.x;
+        left = -screenBoundary.x;
     }
 
     // Update is called once per frame
@@ -57,10 +60,10 @@ public class Spawn : MonoBehaviour
         if (itemTime > itemSpeed)
         {
             GameObject items = Instantiate(item, GameObject.Find("GameManager").transform);
-            items.transform.position = new Vector3(Random.Range(left + 0.5f, right - 0.5f), Random.Range(bottom + 0.5f, top));
+            items.transform.position = new Vector3(Random.Range(left + 0.5f, right - 0.5f), Random.Range(bottom + 0.5f, top),-1);
 
             itemTime = 0;
-            itemSpeed = Random.Range(7, 12);
+            itemSpeed = Random.Range(3, 5);
         }
     }
 
@@ -82,22 +85,22 @@ public class Spawn : MonoBehaviour
             if (ran > 0.75f)
             {
                 enemies = Instantiate(enemy, GameObject.Find("GameManager").transform);
-                enemies.transform.position = new Vector3(Random.Range(left, right), top);
+                enemies.transform.position = new Vector3(Random.Range(left, right), top,-1);
             }
             else if (ran > 0.5f && ran < 0.75f)
             {
                 enemies = Instantiate(enemy, GameObject.Find("GameManager").transform);
-                enemies.transform.position = new Vector3(Random.Range(left, right), bottom);
+                enemies.transform.position = new Vector3(Random.Range(left, right), bottom,-1);
             }
             else if (ran > 0.25f && ran < 0.5f)
             {
                 enemies = Instantiate(enemy, GameObject.Find("GameManager").transform);
-                enemies.transform.position = new Vector3(right, Random.Range(bottom, top));
+                enemies.transform.position = new Vector3(right, Random.Range(bottom, top),-1);
             }
             else
             {
                 enemies = Instantiate(enemy, GameObject.Find("GameManager").transform);
-                enemies.transform.position = new Vector3(left, Random.Range(bottom, top));
+                enemies.transform.position = new Vector3(left, Random.Range(bottom, top),-1);
             }
 
 

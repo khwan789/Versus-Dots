@@ -6,8 +6,8 @@ public class Bomb : MonoBehaviour
 {
     public GameObject player;
     public bool spiral;
-    float x = 0;
-    float speed = 1f;
+    float startAngle;
+    float speed;
 
     SphereCollider sCollider;
     // Start is called before the first frame update
@@ -15,7 +15,8 @@ public class Bomb : MonoBehaviour
     {
         player = GameObject.Find("player");
         sCollider = this.GetComponent<SphereCollider>();
-
+        startAngle = 200f;
+        speed = 1f;
 
     }
 
@@ -33,8 +34,14 @@ public class Bomb : MonoBehaviour
 
     void SpiralMove()
     {
-        this.transform.position += transform.right * Time.deltaTime * 2;
-        this.transform.Rotate(new Vector3(0, 0, 50) * Time.deltaTime * speed);
+        this.transform.position += transform.right * Time.deltaTime * 3;
+        this.transform.Rotate(new Vector3(0, 0, startAngle) * Time.deltaTime * speed);
+        startAngle -= 35 * Time.deltaTime;
+        Debug.Log(startAngle);
+        if(startAngle <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
 

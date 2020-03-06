@@ -10,7 +10,7 @@ public class JoyStick : MonoBehaviour
     Vector2 movingPos;
     Vector2 direction;
     Vector2 screenBounds;
-    Vector2 center;
+    Vector3 center;
 
     //player
     float moveSpeed;
@@ -22,19 +22,32 @@ public class JoyStick : MonoBehaviour
     GameObject closestEnemy;
     float fireTime;
     float fireSpeed;
+
+    //items
+    public GameObject beelet;
+    GameObject _beelet;
+    public GameObject pencil;
+    float rapidTime;
+    bool rapidOn;
+
     // Start is called before the first frame update
     void Start()
     {
         //Joystick
         mouseDown = false;
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        center = new Vector2(0, 0);
+        center = new Vector3(0, 0, -1);
         //player
-        moveSpeed = 1.2f;
+        moveSpeed = 1.5f;
         //gameplay
         gameStart = false;
         fireTime = 0;
         fireSpeed = 1;
+        pencil.SetActive(false);
+
+        //item
+        rapidTime = 0;
+        rapidOn = false;
     }
 
     // Update is called once per frame
@@ -53,11 +66,16 @@ public class JoyStick : MonoBehaviour
         if (Spawn.spawned)
         {
             fireTime += Time.deltaTime;
-            if(fireTime > fireSpeed)
+            if (fireTime > fireSpeed)
             {
                 FireBullet();
                 fireTime = 0;
             }
+        }
+
+        if (rapidOn)
+        {
+            RapidFire();
         }
     }
 
@@ -115,29 +133,70 @@ public class JoyStick : MonoBehaviour
     void WithinScreen()
     {
         Vector2 myPos = this.gameObject.transform.position;
-        Debug.Log(Screen.width);
-        if(myPos.x > screenBounds.x || myPos.x < -screenBounds.x || myPos.y > screenBounds.y || myPos.y < -screenBounds.y)
+        if (myPos.x > screenBounds.x || myPos.x < -screenBounds.x || myPos.y > screenBounds.y || myPos.y < -screenBounds.y)
         {
-            this.transform.position = Vector2.MoveTowards(this.transform.position, center, moveSpeed * Time.deltaTime);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, center, moveSpeed * Time.deltaTime);
         }
     }
 
     void UseItem()
     {
-        switch ((int)Random.Range(0, 1))
+
+        switch (3)//(int)Random.Range(1, 2))
         {
-            case 0:
-                break;
             case 1:
+                ItemBeelet();
+                break;
+            case 2:
+                if (!pencil.activeSelf)
+                {
+                    pencil.SetActive(true);
+                }
+                pencil.GetComponent<Animator>().Play("pencilAnim", -1, 0);
+                break;
+            case 3:
+                rapidOn = true;
                 break;
             default:
                 break;
         }
     }
 
+    void ItemBeelet()
+    {
+        Debug.Log("use item");
+        for (int i = 0; i < 4; i++)
+        {
+            float ang = i * Mathf.PI * 2f / 4;
+            Vector3 pos;
+            pos.x = GameObject.Find("player").transform.position.x + 1f * Mathf.Sin(ang);
+            pos.y = GameObject.Find("player").transform.position.y + 1f * Mathf.Cos(ang);
+            pos.z = GameObject.Find("player").transform.position.z;
+
+            _beelet = Instantiate(beelet, GameObject.Find("GameManager").transform);
+            _beelet.transform.position = pos;
+            _beelet.transform.right = _beelet.transform.position - GameObject.Find("player").transform.position;
+        }
+    }
+
+    void RapidFire()
+    {
+        rapidTime += Time.deltaTime;
+        if(rapidTime <= 3)
+        {
+            fireSpeed = 0.2f;
+        }
+        else
+        {
+            fireSpeed = 1;
+            rapidTime = 0;
+            rapidOn = false;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "item")
+        if (collision.gameObject.tag == "Item")
         {
             UseItem();
             Destroy(collision.gameObject);

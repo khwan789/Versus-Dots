@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float step = speed * Time.deltaTime;
-        this.transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, step);
+        this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, step);
 	}
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -164,6 +164,7 @@ public class Player : MonoBehaviour
             GameObject newBullet;
             newBullet = Instantiate(bullet, GameObject.Find("player").transform);
             newBullet.transform.position = pos;
+            
         }
     }
 
